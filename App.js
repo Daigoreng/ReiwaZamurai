@@ -35,8 +35,7 @@ export default class App extends React.Component {
 
     const HomeStack = createStackNavigator({
       home: {
-        // screen: HomeScreen,
-        screen: Walk_TrainingScreen,
+        screen: HomeScreen,
 
         navigationOptions: {
           ...headerNavigationOptions,
@@ -62,7 +61,8 @@ export default class App extends React.Component {
     const AddStack = createStackNavigator({
       // ←追記部分
       add: {
-        screen: AddScreen,
+        // screen: AddScreen,
+        screen: Walk_TrainingScreen,
         navigationOptions: {
           header: null
         }
