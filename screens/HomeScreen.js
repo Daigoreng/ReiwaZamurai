@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, Image, StyleSheet, ImageBackground, Dimensions } from 'react-native';
+import { View, Text, ScrollView, Image, StyleSheet, ImageBackground, Dimensions, Button } from 'react-native';
 import { ButtonGroup, ListItem, Slider } from 'react-native-elements';
 import { connect } from 'react-redux';
 
@@ -25,8 +25,7 @@ const POOR_COLOR = 'blue';
 
 let imageSelectedIndex =  0;
 let countReview_did = 0;
-
-
+let bar = 0;
 
 const IMAGE_URL = [
   require("../assets/pet_with_lawn.jpg"),
@@ -60,17 +59,19 @@ class HomeScreen extends React.Component {
 
     this.state = {
       selectedIndex: 0,
-      value: 0
+      maxbar: SCREEN_WIDTH,
+      bar: 0
     };
   }
 
+  onStartButtonPress(){
+    this.setState({bar:this.props.countReview*50});
+  }
 
   componentDidMount() {
     this.props.fetchAllReviews();
-    countReview_did = this.props.countReview;
-  
+    
   }
-
 
   onListItemPress = (selectedReview) => {
     this.props.selectDetailReview(selectedReview);
@@ -78,61 +79,40 @@ class HomeScreen extends React.Component {
   }  
 
   render() {
-    
-    console.log(this.props.countReview);
-    
-    //[this.state.value === 1] => [calorie >= 1]
-    if(this.state.value >= 1){
-      this.setState({
-        value: 0
-      });
-      imageSelectedIndex =  imageSelectedIndex + 1;
+    bar = this.state.maxbar - countReview_did*100;
+    console.log(this.state.bar)
 
-    
-    if(countReview_did !== this.props.countReview){
-      this.setState({
-        value: countReview_did
-      });
+    if(this.state.bar > SCREEN_WIDTH - 100){
+      this.setState({bar:0})
+      imageSelectedIndex =  imageSelectedIndex + 1;
     }
-    
-    }
+
     return (
       <View style={{ flex: 1 }}>
-
-        <Image
-          style={{ height: 300, width: SCREEN_WIDTH ,flex:5}}
-          source={IMAGE_URL[imageSelectedIndex]}
-        />
-
-        {/* <ImageBackground 
-          source={require("../assets/lawn.jpg")} 
-          style={{
-            width: 280,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
+        <View style={{flex:12}}>
           <Image
-            style={{ height: 300, width: 300 ,flex:5}}
+            style={{ height: 300, width: SCREEN_WIDTH}}
             source={IMAGE_URL[imageSelectedIndex]}
-          />
-        </ImageBackground> */}
+        />
+        </View>
         <View style={styles.container}>
           <Text style={styles.sizeFont}>
             消費カロリー
           </Text>
-          <Slider
-            value={this.state.value}
-            onValueChange={value => this.setState({ value })}
-            disabled = "Yes"
-            maximumTrackTintColor = "floralwhite"
-            minimumTrackTintColor = "skyblue"
-            thumbTintColor = "skyblue"
-          />
-
-          <Text>
-            Value: {this.state.value},
-            imageSelectedIndex: {imageSelectedIndex}
-          </Text>
+        </View>
+        <View style={{flex:4,
+          backgroundColor:'black'}}>
+            <View style={{height:15,
+              backgroundColor:'red',
+              marginRight:this.state.bar}}>
+            </View>
+        </View>
+        <View style={{flex:4}}>
+        <Button
+          title="feeding"
+          buttonStyle={{ backgroundColor: this.state.startcol }}
+          onPress={() => this.onStartButtonPress()}
+        />
         </View>
       </View>
     );
