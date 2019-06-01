@@ -19,6 +19,7 @@ import ProfileScreen from "./screens/ProfileScreen";
 import Setting1Screen from "./screens/Setting1Screen";
 import Setting2Screen from "./screens/Setting2Screen";
 import ShotImage from "./screens/ShotImage";
+import PET_TrainingScreen from "./screens/PET_TrainingScreen";
 
 export default class App extends React.Component {
   render() {
@@ -74,7 +75,7 @@ export default class App extends React.Component {
     const ProfileStack = createStackNavigator({
       // ←追記部分
       profile: {
-        screen: ProfileScreen,
+        screen: PET_TrainingScreen,
         navigationOptions: {
           ...headerNavigationOptions,
           headerTitle: "Treco",
