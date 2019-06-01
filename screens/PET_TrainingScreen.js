@@ -117,7 +117,8 @@ class ProfileScreen extends React.Component {
 
     if(this.state.mode === 'sleep'){
       return(
-        <View style={{flex : 1}}>
+        <View style={{flex : 1,
+          backgroundColor: 'lightgreen'}}>
             <View style={{flex: 2}}>
               <Text style={{textAlign:'center',
                 fontSize: 30}}>スマホをセットしStartをタップ!!</Text>

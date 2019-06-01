@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Sample",
-    "slug": "react-native-bakusoku",
+    "name": "PPET",
+    "slug": "PPET-1st",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": [
@@ -10,9 +10,9 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/app_icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/app_icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -26,7 +26,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.yide.treco"
+      "package": "com.yide.PPET"
     }
   }
 }
