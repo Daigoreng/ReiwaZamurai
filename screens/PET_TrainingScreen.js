@@ -6,7 +6,42 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 
 
+let coler = 'red';
+let status = 0;
+
 class ProfileScreen extends React.Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      pushUpNum: 0,
+    };
+  }
+
+  rend_Button (col,state){
+    if(state === 0){
+      return(
+        <View>
+          <Button
+            title="Reset all review data"
+            buttonStyle={{ backgroundColor: 'red' }}
+            onPress={() => this.onResetButtonPress('allReviews')}
+          />
+        </View>
+      );
+    }else{
+      return(
+        <View>
+          <Button
+            title="Reset all review data"
+            buttonStyle={{ backgroundColor: 'blue' }}
+            onPress={() => this.onResetButtonPress('allReviews')}
+          />
+        </View>
+      );
+    }
+  }
+
   onResetButtonPress = async (key) => {
     await AsyncStorage.removeItem(key);
 
@@ -22,9 +57,32 @@ class ProfileScreen extends React.Component {
 
   render() {
     return (
-        <View>
-            <Text style={{textAlign:'center',
-              fontSize: 100}}>hello</Text>
+        <View style={{flex : 1}}>
+            <View style={{flex: 3}}>
+              <Text style={{textAlign:'center',
+                fontSize: 30}}>hello</Text>
+            </View>
+            <View style={{flex : 1,
+              flexDirection:'row',
+              justifyContent:'center'}}>
+              <View style={{height: 200,
+                width: 100,
+                marginRight:20
+                }}>
+                <Button
+                  title="Start"
+                  buttonStyle={{ backgroundColor: 'blue' }}
+                />
+              </View>
+              <View style={{height:200,
+                width: 100,
+                marginLeft:20}}>
+                <Button
+                  title="Stop"
+                  buttonStyle={{ backgroundColor: 'red' }}
+              />
+              </View>
+            </View>
         </View>
     )
     

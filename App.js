@@ -78,7 +78,7 @@ export default class App extends React.Component {
         screen: PET_TrainingScreen,
         navigationOptions: {
           ...headerNavigationOptions,
-          headerTitle: "Treco",
+          headerTitle: "PET De Train !!",
           jeaderBackTitle: "Profile"
         }
       },
