@@ -3,11 +3,13 @@ import { Text, View, Alert, AsyncStorage, Image } from 'react-native';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Accelerometer } from 'expo';
+import * as Animatable from 'react-native-animatable';
 
 import * as actions from '../actions';
 
 
 const img = require("../assets/training_PET.png")
+const phone_img = require("../assets/sumaho.png")
 
 class ProfileScreen extends React.Component {
   constructor(props){
@@ -113,24 +115,34 @@ class ProfileScreen extends React.Component {
       }
     }
 
-    return (
+    if(this.state.mode === 'sleep'){
+      return(
         <View style={{flex : 1}}>
             <View style={{flex: 2}}>
               <Text style={{textAlign:'center',
-                fontSize: 30}}>ペットボトルを持ち上げて!!</Text>
+                fontSize: 30}}>スマホをセットしStartをタップ!!</Text>
             </View>
-            <View style={{flex: 2}}>
-              <Text style={{fontSize:40,
-                textAlign:'center'}}>
-                合計 : {this.state.count} 回
-              </Text>
+            <View style={{flex: 5
+              }}>
+              <Animatable.View animation="slideInDown" easing="ease-out-sine" iterationCount="infinite">
+                <Image
+                  style={{ width: 80,
+                    marginLeft:180
+                    }}
+                  resizeMode="contain"
+                  source={phone_img}
+                />
+              </Animatable.View>
             </View>
-            <View style={{flex: 5}}>
-              <Image
-                style={{ flex: 2}}
-                resizeMode="contain"
-                source={img}
-              />
+            <View style={{flex: 5
+              }}>
+                <Image
+                  style={{ width: 300,
+                    marginLeft:55
+                    }}
+                  resizeMode="contain"
+                  source={img}
+                />
             </View>
             <View style={{flex : 2,
               flexDirection:'row',
@@ -156,7 +168,59 @@ class ProfileScreen extends React.Component {
               </View>
             </View>
         </View>
-    );
+      );
+    }else{
+      return(
+        <View style={{flex : 1}}>
+            <View style={{flex: 2}}>
+              <Text style={{textAlign:'center',
+                fontSize: 30}}>ペットボトルを持ち上げて!!</Text>
+            </View>
+            <View style={{flex: 2}}>
+              <Text style={{fontSize:40,
+                textAlign:'center'}}>
+                合計 : {this.state.count} 回
+              </Text>
+            </View>
+            <View style={{flex: 5
+              }}>
+              <Animatable.View animation="pulse" easing="ease-out-sine" iterationCount="infinite">
+                <Image
+                  style={{ width: 300,
+                    marginLeft:55
+                    }}
+                  resizeMode="contain"
+                  source={img}
+                />
+              </Animatable.View>
+              
+            </View>
+            <View style={{flex : 2,
+              flexDirection:'row',
+              justifyContent:'center'}}>
+              <View style={{height: 200,
+                width: 100,
+                marginRight:20
+                }}>
+                <Button
+                  title="Start"
+                  buttonStyle={{ backgroundColor: this.state.startcol }}
+                  onPress={() => this.onStartButtonPress()}
+                />
+              </View>
+              <View style={{height:200,
+                width: 100,
+                marginLeft:20}}>
+                <Button
+                  title="Stop"
+                  buttonStyle={{ backgroundColor: this.state.stopcol }}
+                  onPress={() => this.onStopButtonPress()}
+              />
+              </View>
+            </View>
+        </View>
+      );
+    }
   }
 }
 
