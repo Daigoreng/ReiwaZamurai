@@ -5,7 +5,7 @@ import {
 import {  Button, } from 'react-native-elements';
 // import DatePicker from 'react-native-datepicker';
 import { MapView, Permissions, Location, } from 'expo';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 // import { Container, Header, Content, Item, Input } from 'native-base';
 
 import * as actions from '../actions';
@@ -21,7 +21,8 @@ const INITIAL_STATE = {
         latitude: 35.658581, // Tokyo tower
         longitude: 139.745433, // Tokyo tower
     },
-    totalDistance: 0.0
+    totalDistance: 0.0,
+    checkpoint: 0
 }
 
 class Walk_TrainingScreen extends React.Component{
@@ -73,6 +74,9 @@ class Walk_TrainingScreen extends React.Component{
       this.state.subscription.remove(this.loggingPosition)
     }
     this.setState({ subscription: null, status: 'stop'})
+    this.setState({checkpoint: this.state.checkpoint += 1});
+    // console.log(this.state.checkpoint);
+    this.props.navigation.navigate('home');
   }
 
 //   stopMarker(){
@@ -122,7 +126,11 @@ class Walk_TrainingScreen extends React.Component{
     latitude2 = latitude2 * 3.14 / 180;
     longitude2 = longitude2 * 3.14 / 180;
 
-    return 6371 * Math.acos(Math.cos(latitude1) * Math.cos(latitude2) * Math.cos(longitude2 - longitude1) + Math.sin(latitude1) * Math.sin(latitude2)) * 1000;
+    return Math.round(6371 * Math.acos(Math.cos(latitude1) * Math.cos(latitude2) * Math.cos(longitude2 - longitude1) + Math.sin(latitude1) * Math.sin(latitude2)) * 1000)/10;
+  }
+
+  hello(){
+    this.setState({checkpoint: this.state.checkpoint -= 1});
   }
 
   render() {
@@ -136,10 +144,10 @@ class Walk_TrainingScreen extends React.Component{
           region={{
             latitude:this.state.latitude,
             longitude: this.state.longitude,
-            latitudeDelta: 0.00922,
-            longitudeDelta: 0.00521
-            // latitudeDelta: 0.001,
-            // longitudeDelta: 0.001
+            // latitudeDelta: 0.00922,
+            // longitudeDelta: 0.00521
+            latitudeDelta: 0.001,
+            longitudeDelta: 0.001
           }}
       >
         {
@@ -170,32 +178,62 @@ class Walk_TrainingScreen extends React.Component{
             
         
       </MapView>
+
+      <View style={styles.container}>
+        {this.state.totalDistance < 1000 ?(
+          <Text style={styles.textContainer}>
+            {this.state.totalDistance} m
+          </Text>
+        ):(
+          <Text style={styles.textContainer}>
+            {this.state.totalDistance / 1000} km
+          </Text>
+        )}
+      </View>
       
 
-        <ScrollView style={{ flex: 1 }}>
+        {/* <ScrollView style={{ flex: 1 }}>
           {this.state.status === 'stop' ?
         <Text>
           {this.state.totalDistance} m
         </Text>
         : null
           }
- </ScrollView>
+ </ScrollView> */}
 <View style={styles.buttonContainer}>
         <Button 
+        // large
+          style={{height: 300}}
           onPress={()=>this.startLogging()}
           title="start"          
           />
             
           {/* </Button> */}
 
+
+            {
+              this.state.checkpoint === 1 ?
+              <View>
+                <View style={{ fontSize:0}}>
+                  <Text style={{display: "none"}}>{this.props.Distance(this.state.totalDistance).payload}</Text>
+                </View>
+                {/* <View style={{ fontSize:40}}>
+                  <Text>{this.props.total_Distance}</Text>
+                </View> */}
+              </View>
+              : null
+            }
+
             <Button
+            // raised
             title="stop"
             color='black'
+            style={{height: 300}}
             onPress={()=>{Alert.alert(
               "Question",
               "Do you finish?",
               [
-                  { text: "Yes", onPress: this.stopLogging()}
+                  { text: "Yes", onPress: ()=>this.stopLogging()}
               ],
               { cancelable: false }
             )}}
@@ -223,6 +261,18 @@ const styles = StyleSheet.create({
       alignItems:'center',
       justifyContent:'space-around',
     },
+    textContainer:{
+      fontSize: 50,
+      textAlign: 'center',
+      fontFamily: 'Hiragino Mincho ProN'
+    }
   });
 
-export default Walk_TrainingScreen;
+const mapStateToProps = (state) => {
+  return {
+    total_Distance: state.review.total_Distance
+  };
+};
+  
+  
+export default connect(mapStateToProps, actions)(Walk_TrainingScreen);

@@ -4,7 +4,8 @@ import {
   FETCH_ALL_REVIEWS,
   SELECT_DETAIL_REVIEW,
   CALSUM_REVIEW,
-  COUNT_REVIEW
+  COUNT_REVIEW,
+  TOTAL_DISTANCE
 } from './types';
 
 
@@ -43,4 +44,8 @@ export const check = () => {
   }
   else if(calsumReview === 1) calsumReview = 0
   return { type: CALSUM_REVIEW, payload: calsumReview };
+};
+
+export const Distance = (total_Distance) => {
+  return { type: TOTAL_DISTANCE, payload: total_Distance};
 };
