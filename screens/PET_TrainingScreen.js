@@ -1,11 +1,12 @@
 import React from 'react';
-import { Text, View, Alert, AsyncStorage } from 'react-native';
+import { Text, View, Alert, AsyncStorage, Image } from 'react-native';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 
 import * as actions from '../actions';
 
 
+const img = require("../assets/training_PET.png")
 let coler = 'red';
 let status = 0;
 
@@ -55,14 +56,31 @@ class ProfileScreen extends React.Component {
     );
   }
 
+  onStartButtonPress = () =>{
+    let num = this.state.pushUpNum;
+    num = num += 1;
+    this.setState({pushUpNum : num})
+  }
+
   render() {
     return (
         <View style={{flex : 1}}>
-            <View style={{flex: 3}}>
+            <View style={{flex: 2}}>
               <Text style={{textAlign:'center',
                 fontSize: 30}}>hello</Text>
             </View>
-            <View style={{flex : 1,
+            <View style={{flex: 2}}>
+              <Text style={{textAlign:'center',
+                fontSize: 30}}>Total : {this.state.pushUpNum}</Text>
+            </View>
+            <View style={{flex: 5}}>
+              <Image
+                style={{ flex: 2}}
+                resizeMode="contain"
+                source={img}
+              />
+            </View>
+            <View style={{flex : 2,
               flexDirection:'row',
               justifyContent:'center'}}>
               <View style={{height: 200,
@@ -72,6 +90,7 @@ class ProfileScreen extends React.Component {
                 <Button
                   title="Start"
                   buttonStyle={{ backgroundColor: 'blue' }}
+                  onPress={() => this.onStartButtonPress()}
                 />
               </View>
               <View style={{height:200,
