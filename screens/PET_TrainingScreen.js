@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, View, Alert, AsyncStorage, Image } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Text, View, Alert, AsyncStorage, Image, ImageBackground } from 'react-native';
+import { Button, Avatar} from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Accelerometer } from 'expo';
 import * as Animatable from 'react-native-animatable';
@@ -10,6 +10,7 @@ import * as actions from '../actions';
 
 const img = require("../assets/training_PET.png")
 const phone_img = require("../assets/sumaho.png")
+const gym_img = require("../assets/gym.jpg")
 
 class ProfileScreen extends React.Component {
   constructor(props){
@@ -97,7 +98,7 @@ class ProfileScreen extends React.Component {
     if(this.state.mode === 'sleep'){
       return(
         <View style={{flex : 1,
-          backgroundColor: 'lightgreen'}}>
+          backgroundColor: 'white'}}>
             <View style={{flex: 2}}>
               <Text style={{textAlign:'center',
                 fontSize: 30}}>スマホをセットしStartをタップ!!</Text>
@@ -151,24 +152,29 @@ class ProfileScreen extends React.Component {
       );
     }else{
       return(
-        <View style={{flex : 1}}>
-            <View style={{flex: 2}}>
+        <View style={{flex : 1,}}>
+          <ImageBackground source={require("../assets/gym.jpg")} style={{width: '100%', height: '100%'}}>
+            <View style={{flex: 1}}>
               <Text style={{textAlign:'center',
-                fontSize: 30}}>ペットボトルを持ち上げて!!</Text>
+                fontSize: 30,
+                color:'red'}}>ペットボトルを持ち上げて!!</Text>
             </View>
-            <View style={{flex: 2}}>
+            <View style={{flex: 1}}>
               <Text style={{fontSize:40,
-                textAlign:'center'}}>
+                textAlign:'center',
+                color:'red'}}>
                 合計 : {this.props.countReview} 回
                 {console.log(this.props.countReview)}
               </Text>
             </View>
+            
             <View style={{flex: 5
               }}>
               <Animatable.View animation="pulse" easing="ease-out-sine" iterationCount="infinite">
                 <Image
                   style={{ width: 300,
-                    marginLeft:55
+                    marginLeft:55,
+                    marginTop:150
                     }}
                   resizeMode="contain"
                   source={img}
@@ -176,7 +182,7 @@ class ProfileScreen extends React.Component {
               </Animatable.View>
               
             </View>
-            <View style={{flex : 2,
+            <View style={{flex : 1,
               flexDirection:'row',
               justifyContent:'center'}}>
               <View style={{height: 200,
@@ -199,7 +205,9 @@ class ProfileScreen extends React.Component {
               />
               </View>
             </View>
+            </ImageBackground>
         </View>
+        
       );
     }
   }
