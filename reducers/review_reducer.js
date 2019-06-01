@@ -2,14 +2,14 @@ import {
   FETCH_ALL_REVIEWS,
   SELECT_DETAIL_REVIEW,
   CALSUM_REVIEW,
-  CALSUM_MANEGE
+  COUNT_REVIEW
 } from '../actions/types';
 
 const INITIAL_STATE = {
   allReviews: [],
   detailReview: [],
-  calsumReview: [],
-  calsumManege: []
+  calsumReview: 0,
+  countReview: 0
 };
 
 
@@ -24,8 +24,8 @@ export default (state = INITIAL_STATE, action) => {
     case CALSUM_REVIEW:
         return { ...state, calsumReview: action.payload };
 
-    case CALSUM_MANEGE:
-        return { ...state, calsumManege: action.payload };
+    case COUNT_REVIEW:
+        return { ...state, countReview: action.payload };
 
     default:
       return state;

@@ -4,7 +4,7 @@ import {
   FETCH_ALL_REVIEWS,
   SELECT_DETAIL_REVIEW,
   CALSUM_REVIEW,
-  CALSUM_MANEGE
+  COUNT_REVIEW
 } from './types';
 
 
@@ -28,21 +28,19 @@ export const selectDetailReview = (selectedReview) => {
   return { type: SELECT_DETAIL_REVIEW, payload: selectedReview };
 };
 
-export const calSum = (count) => {
-  let Sum = count * 1.5;
-  var array = [];
-  array[0] = [count];
-  array[1] = [Sum];
-  console.log(array);
-  return { type: CALSUM_REVIEW, payload: array};
+let countReview = 0;
+
+export const countreview = () => {
+  countReview += 1
+  return { type: COUNT_REVIEW, payload: countReview};
 };
 
-export const check = (check) => {
-  if(check === 0){
-    // check = 1
-    console.log(check)
+let calsumReview = 0
+
+export const check = () => {
+  if(calsumReview === 0){
+    calsumReview = 1
   }
-  // else check = 0
-  else console.log(check)
-  return { type: CALSUM_MANEGE, payload: check };
+  else if(calsumReview === 1) calsumReview = 0
+  return { type: CALSUM_REVIEW, payload: calsumReview };
 };

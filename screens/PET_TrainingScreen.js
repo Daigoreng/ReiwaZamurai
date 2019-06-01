@@ -61,28 +61,6 @@ class ProfileScreen extends React.Component {
     this._subscription = null;
   }
 
-  increment() {
-    if(this.state.mode == 'active'){
-      this.setState({
-        count: this.state.count += 1
-      });
-    }
-  }
-
-  decrement() {
-    this.setState({
-      checkcount: this.state.checkcount = 0
-    });
-  }
-
-  checkcounting() {
-    if(this.state.checkcount === 0){
-      this.setState({
-        checkcount: this.state.checkcount += 1
-      });
-    }
-  }
-
   onStopButtonPress = () =>{
     let num = this.state.pushUpNum;
     num = num += 1;
@@ -102,18 +80,19 @@ class ProfileScreen extends React.Component {
     let { x, y, z } = this.state.accelerometerData;
 
     if(z > 0){
-      if(this.state.checkcount === 0){
+      if(this.props.calsumReview === 0){
         z = "zの値は+です";
-        this.increment();
-        this.checkcounting();
+        this.props.countreview();
+        this.props.check();
       }
     };
 
     if(z < 0){
-      if(this.state.checkcount === 1){
-        this.decrement();
+      if(this.props.calsumReview === 1){
+        this.props.check();
       }
     }
+
 
     if(this.state.mode === 'sleep'){
       return(
@@ -180,7 +159,8 @@ class ProfileScreen extends React.Component {
             <View style={{flex: 2}}>
               <Text style={{fontSize:40,
                 textAlign:'center'}}>
-                合計 : {this.props.calSum(this.state.count).payload[0]} 回
+                合計 : {this.props.countReview} 回
+                {console.log(this.props.countReview)}
               </Text>
             </View>
             <View style={{flex: 5
@@ -229,6 +209,8 @@ class ProfileScreen extends React.Component {
 const mapStateToProps = (state) => {
   return {
     allReviews: state.review.allReviews,
+    calsumReview: state.review.calsumReview,
+    countReview: state.review.countReview
   };
 };
 
