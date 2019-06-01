@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 
 import * as actions from '../actions';
+import parseErrorStack from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
 
 const ALL_INDEX = 0;
@@ -23,7 +24,7 @@ const POOR_INDEX = 3;
 const POOR_COLOR = 'blue';
 
 let imageSelectedIndex =  0;
-
+let countReview_did = 0;
 
 
 
@@ -66,6 +67,7 @@ class HomeScreen extends React.Component {
 
   componentDidMount() {
     this.props.fetchAllReviews();
+    countReview_did = this.props.countReview;
   
   }
 
@@ -73,118 +75,26 @@ class HomeScreen extends React.Component {
   onListItemPress = (selectedReview) => {
     this.props.selectDetailReview(selectedReview);
     this.props.navigation.navigate('detail');
-  }
-
-
-  renderReviews() {
-    let reviewRank;
-
-    switch (this.state.selectedIndex) {
-      case GREAT_INDEX:
-        reviewRank = GREAT;
-        break;
-
-      case GOOD_INDEX:
-        reviewRank = GOOD;
-        break;
-
-      case POOR_INDEX:
-        reviewRank = POOR;
-        break;
-
-      default:
-        break;
-    }
-
-    let rankedReviews = [];
-
-    if (this.state.selectedIndex === ALL_INDEX) {
-      rankedReviews = this.props.allReviews;
-    } else {
-      for (let i = 0; i < this.props.allReviews.length; i++) {
-        if (this.props.allReviews[i].rank === reviewRank) {
-          rankedReviews.push(this.props.allReviews[i]);
-        }
-      }
-    }
-
-    return (
-      <ScrollView>
-        {rankedReviews.map((review, index) => {
-          let reviewColor;
-
-          switch (review.rank) {
-            case GREAT:
-              reviewColor = GREAT_COLOR;
-              break;
-
-            case GOOD:
-              reviewColor = GOOD_COLOR;
-              break;
-
-            case POOR:
-              reviewColor = POOR_COLOR;
-              break;
-
-            default:
-              break;
-          }
-
-          return (
-            <ListItem
-              key={index}
-              leftIcon={{ name: review.rank, color: reviewColor }}
-              title={review.country}
-              subtitle={`${review.dateFrom} ~ ${review.dateTo}`}
-              onPress={() => this.onListItemPress(review)}
-            />
-          );
-        })}
-      </ScrollView>
-      
-    );
-  }
-
-  
+  }  
 
   render() {
-    let nGreat = 0;
-    let nGood = 0;
-    let nPoor = 0;
-
-    for (let i = 0; i < this.props.allReviews.length; i++) {
-      switch (this.props.allReviews[i].rank) {
-        case GREAT:
-          nGreat++;
-          break;
-
-        case GOOD:
-          nGood++;
-          break;
-
-        case POOR:
-          nPoor++;
-          break;
-
-        default:
-          break;
-      }
-    }
-
-    const buttonList = [
-      `All (${this.props.allReviews.length})`,
-      `Great (${nGreat})`,
-      `Good (${nGood})`,
-      `Poor (${nPoor})`
-    ];
-
+    
+    console.log(this.props.countReview);
+    
     //[this.state.value === 1] => [calorie >= 1]
-    if(this.state.value === 1){
+    if(this.state.value >= 1){
       this.setState({
         value: 0
       });
       imageSelectedIndex =  imageSelectedIndex + 1;
 
+    
+    if(countReview_did !== this.props.countReview){
+      this.setState({
+        value: countReview_did
+      });
+    }
+    
     }
     return (
       <View style={{ flex: 1 }}>
@@ -219,12 +129,11 @@ class HomeScreen extends React.Component {
             thumbTintColor = "skyblue"
           />
 
-          {/* <Text>
+          <Text>
             Value: {this.state.value},
             imageSelectedIndex: {imageSelectedIndex}
-          </Text> */}
+          </Text>
         </View>
-        {this.renderReviews()}
       </View>
     );
   }
@@ -250,7 +159,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    allReviews: state.review.allReviews
+    countReview: state.review.countReview
   };
 };
 
