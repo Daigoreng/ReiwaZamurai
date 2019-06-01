@@ -1,12 +1,15 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
-import { ButtonGroup, ListItem } from 'react-native-elements';
+import { View, Text, ScrollView, Image, StyleSheet, ImageBackground, Dimensions, Button } from 'react-native';
+import { ButtonGroup, ListItem, Slider } from 'react-native-elements';
 import { connect } from 'react-redux';
 
+
 import * as actions from '../actions';
+import parseErrorStack from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
 
 const ALL_INDEX = 0;
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const GREAT = 'sentiment-very-satisfied';
 const GREAT_INDEX = 1;
@@ -20,6 +23,35 @@ const POOR = 'sentiment-dissatisfied';
 const POOR_INDEX = 3;
 const POOR_COLOR = 'blue';
 
+let imageSelectedIndex =  0;
+let countReview_did = 0;
+let bar = 0;
+
+const IMAGE_URL = [
+  require("../assets/pet_with_lawn.jpg"),
+  require("../assets/pet_2.jpg"),
+  require("../assets/pet_3.jpg"),
+  require("../assets/pet_4.jpg"),
+  require("../assets/pet_5.jpg"),
+  require("../assets/pet_6.jpg"),
+  require("../assets/pet_7.jpg")
+
+];
+
+function PetStatusBar(props) {
+  return(
+    <View style={{
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      alignItems: 'center',
+    }}>
+      <View style={{width: 50, height: 50, backgroundColor: 'skyblue'}} />
+      <View style={{width: 50, height: 50, backgroundColor: 'skyblue'}} />
+      <View style={{width: 50, height: 50, backgroundColor: 'skyblue'}} />
+    </View>
+  );
+}
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -27,145 +59,87 @@ class HomeScreen extends React.Component {
 
     this.state = {
       selectedIndex: 0,
+      maxbar: SCREEN_WIDTH,
+      bar: 0
     };
   }
 
+  onStartButtonPress(){
+    this.setState({bar:this.props.countReview*50});
+  }
 
   componentDidMount() {
     this.props.fetchAllReviews();
+    
   }
-
 
   onListItemPress = (selectedReview) => {
     this.props.selectDetailReview(selectedReview);
     this.props.navigation.navigate('detail');
-  }
-
-
-  renderReviews() {
-    let reviewRank;
-
-    switch (this.state.selectedIndex) {
-      case GREAT_INDEX:
-        reviewRank = GREAT;
-        break;
-
-      case GOOD_INDEX:
-        reviewRank = GOOD;
-        break;
-
-      case POOR_INDEX:
-        reviewRank = POOR;
-        break;
-
-      default:
-        break;
-    }
-
-    let rankedReviews = [];
-
-    if (this.state.selectedIndex === ALL_INDEX) {
-      rankedReviews = this.props.allReviews;
-    } else {
-      for (let i = 0; i < this.props.allReviews.length; i++) {
-        if (this.props.allReviews[i].rank === reviewRank) {
-          rankedReviews.push(this.props.allReviews[i]);
-        }
-      }
-    }
-
-    return (
-      <ScrollView>
-        {rankedReviews.map((review, index) => {
-          let reviewColor;
-
-          switch (review.rank) {
-            case GREAT:
-              reviewColor = GREAT_COLOR;
-              break;
-
-            case GOOD:
-              reviewColor = GOOD_COLOR;
-              break;
-
-            case POOR:
-              reviewColor = POOR_COLOR;
-              break;
-
-            default:
-              break;
-          }
-
-          return (
-            <ListItem
-              key={index}
-              leftIcon={{ name: review.rank, color: reviewColor }}
-              title={review.country}
-              subtitle={`${review.dateFrom} ~ ${review.dateTo}`}
-              onPress={() => this.onListItemPress(review)}
-            />
-          );
-        })}
-      </ScrollView>
-    );
-  }
-
-  onButtonGroupPress = (selectedIndex) => {
-    this.setState({
-      selectedIndex: selectedIndex
-    });
-  }
-
+  }  
 
   render() {
-    let nGreat = 0;
-    let nGood = 0;
-    let nPoor = 0;
+    bar = this.state.maxbar - countReview_did*100;
+    console.log(this.state.bar)
 
-    for (let i = 0; i < this.props.allReviews.length; i++) {
-      switch (this.props.allReviews[i].rank) {
-        case GREAT:
-          nGreat++;
-          break;
-
-        case GOOD:
-          nGood++;
-          break;
-
-        case POOR:
-          nPoor++;
-          break;
-
-        default:
-          break;
-      }
+    if(this.state.bar > SCREEN_WIDTH - 100){
+      this.setState({bar:0})
+      imageSelectedIndex =  imageSelectedIndex + 1;
     }
-
-    const buttonList = [
-      `All (${this.props.allReviews.length})`,
-      `Great (${nGreat})`,
-      `Good (${nGood})`,
-      `Poor (${nPoor})`
-    ];
 
     return (
       <View style={{ flex: 1 }}>
-        <ButtonGroup
-          buttons={buttonList}
-          selectedIndex={this.state.selectedIndex}
-          onPress={this.onButtonGroupPress}
+        <View style={{flex:12}}>
+          <Image
+            style={{ height: 300, width: SCREEN_WIDTH}}
+            source={IMAGE_URL[imageSelectedIndex]}
         />
-
-        {this.renderReviews()}
+        </View>
+        <View style={styles.container}>
+          <Text style={styles.sizeFont}>
+            消費カロリー
+          </Text>
+        </View>
+        <View style={{flex:4,
+          backgroundColor:'black'}}>
+            <View style={{height:15,
+              backgroundColor:'red',
+              marginRight:this.state.bar}}>
+            </View>
+        </View>
+        <View style={{flex:4}}>
+        <Button
+          title="feeding"
+          buttonStyle={{ backgroundColor: this.state.startcol }}
+          onPress={() => this.onStartButtonPress()}
+        />
+        </View>
       </View>
     );
   }
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 2,
+    marginLeft: 10,
+    marginRight: 10,
+    alignItems: "stretch",
+    justifyContent: "center",
+    
+  },
+  sizeFont: {
+    flex: 1,
+    fontSize: 30,
+    alignItems: "stretch",
+    justifyContent: "center",
+    
+  }
+});
 
 const mapStateToProps = (state) => {
   return {
-    allReviews: state.review.allReviews
+    countReview: state.review.countReview
   };
 };
 

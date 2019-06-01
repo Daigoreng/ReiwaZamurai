@@ -39,7 +39,7 @@ export default class App extends React.Component {
 
         navigationOptions: {
           ...headerNavigationOptions,
-          headerTitle: "Treco",
+          headerTitle: "TTEP",
           headerBackTitle: "Home"
         }
       },
