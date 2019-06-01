@@ -160,12 +160,14 @@ class ProfileScreen extends React.Component {
                 color:'red'}}>ペットボトルを持ち上げて!!</Text>
             </View>
             <View style={{flex: 1}}>
-              <Text style={{fontSize:40,
-                textAlign:'center',
-                color:'red'}}>
-                合計 : {this.props.countReview} 回
-                {console.log(this.props.countReview)}
-              </Text>
+              <Avatar
+                size={100}
+                rounded
+                title={this.props.countReview}
+                titleStyle={{color:'red'}}
+                activeOpacity={0.7}
+                containerStyle={{marginLeft:155}}
+              />
             </View>
             
             <View style={{flex: 5
@@ -173,7 +175,7 @@ class ProfileScreen extends React.Component {
               <Animatable.View animation="pulse" easing="ease-out-sine" iterationCount="infinite">
                 <Image
                   style={{ width: 300,
-                    marginLeft:55,
+                    marginLeft:50,
                     marginTop:150
                     }}
                   resizeMode="contain"
