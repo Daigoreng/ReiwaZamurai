@@ -1,27 +1,46 @@
 import { AsyncStorage } from 'react-native';
 
 import {
-    FETCH_ALL_REVIEWS,
-    SELECT_DETAIL_REVIEW,
+  FETCH_ALL_REVIEWS,
+  SELECT_DETAIL_REVIEW,
+  CALSUM_REVIEW,
+  COUNT_REVIEW
 } from './types';
 
 
-// Action creatorを作成
-export const fetchAllReviews = () => {
-  // Reducerに渡す`type`と`payload`を指定  
-    return async (dispatch) => {
-        let stringifiedAllReviews = await AsyncStorage.getItem('allReviews');
-        let allReviews = JSON.parse(stringifiedAllReviews);
 
-        if (allReviews == null) {
-            // `AsyncStorage`に空の評価データを書き込む(非同期処理)
-            allReviews = [];
-            await AsyncStorage.setItem('allReviews', JSON.stringify(allReviews));
-        }
-        dispatch({ type: FETCH_ALL_REVIEWS, payload: allReviews });
+
+export const fetchAllReviews = () => {
+  return async (dispatch) => {
+    let stringifiedAllReviews = await AsyncStorage.getItem('allReviews');
+    let allReviews = JSON.parse(stringifiedAllReviews);
+
+    if (allReviews === null) {
+      allReviews = [];
+      await AsyncStorage.setItem('allReviews', JSON.stringify(allReviews));
     }
+
+    dispatch({ type: FETCH_ALL_REVIEWS, payload: allReviews });
+  };
 };
 
-export const selectDetailReview = (selectedReview) => { // ←追記ここから
-    return { type: SELECT_DETAIL_REVIEW, payload: selectedReview };
-}; // ←追記ここまで
+export const selectDetailReview = (selectedReview) => {
+  return { type: SELECT_DETAIL_REVIEW, payload: selectedReview };
+};
+
+let countReview = 0;
+
+export const countreview = () => {
+  countReview += 1
+  return { type: COUNT_REVIEW, payload: countReview};
+};
+
+let calsumReview = 0
+
+export const check = () => {
+  if(calsumReview === 0){
+    calsumReview = 1
+  }
+  else if(calsumReview === 1) calsumReview = 0
+  return { type: CALSUM_REVIEW, payload: calsumReview };
+};
