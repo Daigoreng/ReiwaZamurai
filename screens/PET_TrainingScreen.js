@@ -2,13 +2,12 @@ import React from 'react';
 import { Text, View, Alert, AsyncStorage, Image } from 'react-native';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
+import { Accelerometer } from 'expo';
 
 import * as actions from '../actions';
 
 
 const img = require("../assets/training_PET.png")
-let coler = 'red';
-let status = 0;
 
 class ProfileScreen extends React.Component {
   constructor(props){
@@ -16,62 +15,115 @@ class ProfileScreen extends React.Component {
 
     this.state = {
       pushUpNum: 0,
+      mode: 'sleep',
+      startcol: 'blue',
+      stopcol: 'gainsboro',
+      accelerometerData: {},
+      count: 0,
+      checkcount: 0
     };
   }
 
-  rend_Button (col,state){
-    if(state === 0){
-      return(
-        <View>
-          <Button
-            title="Reset all review data"
-            buttonStyle={{ backgroundColor: 'red' }}
-            onPress={() => this.onResetButtonPress('allReviews')}
-          />
-        </View>
-      );
-    }else{
-      return(
-        <View>
-          <Button
-            title="Reset all review data"
-            buttonStyle={{ backgroundColor: 'blue' }}
-            onPress={() => this.onResetButtonPress('allReviews')}
-          />
-        </View>
-      );
+  componentDidMount() {
+    this._toggle();
+    //this.props.calSum();
+  }
+
+  componentWillUnmount() {
+    this._unsubscribe();
+  }
+
+  _toggle = () => {
+    if (this._subscription) {
+      this._unsubscribe();
+    } else {
+      this._subscribe();
     }
   }
 
-  onResetButtonPress = async (key) => {
-    await AsyncStorage.removeItem(key);
-
-    Alert.alert(
-      'Reset',
-      `'${key}' in AsyncStorage has been removed.`,
-      [
-        { text: 'OK' },
-      ],
-      { cancelable: false }
-    );
+  // 加速度センシングを開始する
+  _subscribe = () => {
+    this._subscription = Accelerometer.addListener(accelerometerData => {
+      // 加速度を取得
+      this.setState({ accelerometerData });
+    });
+    // 1秒ごとに加速度を測定
+    Accelerometer.setUpdateInterval(1000);
   }
 
-  onStartButtonPress = () =>{
+  // 加速度センシングを終了する
+  _unsubscribe = () => {
+    if (this._subscription) {
+      this._subscription.remove();
+    }
+    this._subscription = null;
+  }
+
+  increment() {
+    if(this.state.mode == 'active'){
+      this.setState({
+        count: this.state.count += 1
+      });
+    }
+  }
+
+  decrement() {
+    this.setState({
+      checkcount: this.state.checkcount = 0
+    });
+  }
+
+  checkcounting() {
+    if(this.state.checkcount === 0){
+      this.setState({
+        checkcount: this.state.checkcount += 1
+      });
+    }
+  }
+
+  onStopButtonPress = () =>{
     let num = this.state.pushUpNum;
     num = num += 1;
     this.setState({pushUpNum : num})
+    this.setState({startcol : 'blue'})
+    this.setState({stopcol: 'gainsboro'})
+    this.setState({mode: 'sleep'})
+  }
+
+  onStartButtonPress = () =>{
+    this.setState({startcol : 'gainsboro'})
+    this.setState({stopcol: 'red'})
+    this.setState({mode: 'active'})
   }
 
   render() {
+    let { x, y, z } = this.state.accelerometerData;
+
+    if(z > 0){
+      if(this.state.checkcount === 0){
+        z = "zの値は+です";
+        this.increment();
+        this.checkcounting();
+      }
+    };
+
+    if(z < 0){
+      if(this.state.checkcount === 1){
+        this.decrement();
+      }
+    }
+
     return (
         <View style={{flex : 1}}>
             <View style={{flex: 2}}>
               <Text style={{textAlign:'center',
-                fontSize: 30}}>hello</Text>
+                fontSize: 30}}>ペットボトルを持ち上げて!!</Text>
             </View>
             <View style={{flex: 2}}>
-              <Text style={{textAlign:'center',
-                fontSize: 30}}>Total : {this.state.pushUpNum}</Text>
+              <Text style={{fontSize:40,
+                textAlign:'center'}}>
+                合計 : {this.state.count} 回
+              </Text>
             </View>
             <View style={{flex: 5}}>
               <Image
@@ -89,7 +141,7 @@ class ProfileScreen extends React.Component {
                 }}>
                 <Button
                   title="Start"
-                  buttonStyle={{ backgroundColor: 'blue' }}
+                  buttonStyle={{ backgroundColor: this.state.startcol }}
                   onPress={() => this.onStartButtonPress()}
                 />
               </View>
@@ -98,40 +150,13 @@ class ProfileScreen extends React.Component {
                 marginLeft:20}}>
                 <Button
                   title="Stop"
-                  buttonStyle={{ backgroundColor: 'red' }}
+                  buttonStyle={{ backgroundColor: this.state.stopcol }}
+                  onPress={() => this.onStopButtonPress()}
               />
               </View>
             </View>
         </View>
-    )
-    
-    /*　　元のreturn
-    return (
-      <View style={{ flex: 1, justifyContent: 'center' }}>
-        <View style={{ padding: 20 }}>
-          <Button
-            title="Take a Photo!"
-            onPress={() => this.props.navigation.navigate('shotimage')}
-          />
-        </View>
-
-        <View style={{ padding: 20 }}>
-          <Button
-            title="Reset welcome page"
-            buttonStyle={{ backgroundColor: 'red' }}
-            onPress={() => this.onResetButtonPress('isInitialized')}
-          />
-        </View>
-
-        <View style={{ padding: 20 }}>
-          <Button
-            title="Reset all review data"
-            buttonStyle={{ backgroundColor: 'red' }}
-            onPress={() => this.onResetButtonPress('allReviews')}
-          />
-        </View>
-      </View>
-    );*/
+    );
   }
 }
 
