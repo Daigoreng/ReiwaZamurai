@@ -20,6 +20,7 @@ import Setting1Screen from "./screens/Setting1Screen";
 import Setting2Screen from "./screens/Setting2Screen";
 import ShotImage from "./screens/ShotImage";
 import PET_TrainingScreen from "./screens/PET_TrainingScreen";
+import Walk_TrainingScreen from "./screens/Walk_TrainingScreen"
 
 export default class App extends React.Component {
   render() {
@@ -34,20 +35,22 @@ export default class App extends React.Component {
 
     const HomeStack = createStackNavigator({
       home: {
-        screen: HomeScreen,
+        // screen: HomeScreen,
+        screen: Walk_TrainingScreen,
+
         navigationOptions: {
           ...headerNavigationOptions,
           headerTitle: "Treco",
           headerBackTitle: "Home"
         }
       },
-      detail: {
-        screen: DetailScreen,
-        navigationOptions: {
-          ...headerNavigationOptions,
-          headerTitle: "Detail"
-        }
-      }
+      // detail: {
+      //   screen: DetailScreen,
+      //   navigationOptions: {
+      //     ...headerNavigationOptions,
+      //     headerTitle: "Detail"
+      //   }
+      // }
     });
 
     HomeStack.navigationOptions = ({ navigation }) => {
