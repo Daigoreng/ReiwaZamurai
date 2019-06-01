@@ -179,7 +179,7 @@ class ProfileScreen extends React.Component {
             <View style={{flex: 2}}>
               <Text style={{fontSize:40,
                 textAlign:'center'}}>
-                合計 : {this.state.count} 回
+                合計 : {this.props.calSum(this.state.count).payload[0]} 回
               </Text>
             </View>
             <View style={{flex: 5
