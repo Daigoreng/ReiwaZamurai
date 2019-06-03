@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, Image, StatusBar, Platform } from "react-native";
+import { StyleSheet, Text, View, Image, StatusBar, Platform, Slider } from "react-native";
 import {
   createAppContainer,
   createBottomTabNavigator,
@@ -26,7 +26,7 @@ export default class App extends React.Component {
   render() {
     const headerNavigationOptions = {
       headerStyle: {
-        backgroundColor: "deepskyblue",
+        backgroundColor: "darkcyan",
         marginTop: Platform.OS === "android" ? 24 : 0
       },
       headerTitleStyle: { color: "white" },
@@ -126,11 +126,11 @@ export default class App extends React.Component {
           navigationOptions: {
             tabBarIcon: () => (
               <Image
-                style={{ height: 60, width: 60, tintColor: "deepskyblue" }}
-                source={require("./assets/add.png")}
+                style={{ height: 30, width: 30}}
+                source={require("./assets/working.png")}
               />
             ),
-            title: ""
+            title: "walking"
           }
         },
         profileStack: {
@@ -139,7 +139,7 @@ export default class App extends React.Component {
             tabBarIcon: ({ tintColor }) => (
               <Image
                 style={{ height: 25, width: 25, tintColor: tintColor }}
-                source={require('./assets/profile.png')}
+                source={require('./assets/arm.png')}
               />
             ),
             title: 'Profile'

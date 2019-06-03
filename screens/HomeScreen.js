@@ -28,7 +28,7 @@ let countReview_did = 0;
 let bar = 0;
 
 const IMAGE_URL = [
-  require("../assets/pet_with_lawn.jpg"),
+  require("../assets/pet_1.jpg"),
   require("../assets/pet_2.jpg"),
   require("../assets/pet_3.jpg"),
   require("../assets/pet_4.jpg"),
@@ -46,9 +46,8 @@ function PetStatusBar(props) {
       justifyContent: 'space-around',
       alignItems: 'center',
     }}>
-      <View style={{width: 50, height: 50, backgroundColor: 'skyblue'}} />
-      <View style={{width: 50, height: 50, backgroundColor: 'skyblue'}} />
-      <View style={{width: 50, height: 50, backgroundColor: 'skyblue'}} />
+ 
+
     </View>
   );
 }
@@ -60,12 +59,13 @@ class HomeScreen extends React.Component {
     this.state = {
       selectedIndex: 0,
       maxbar: SCREEN_WIDTH,
-      bar: 0
+      bar: 0,
+      value: 0
     };
   }
 
   onStartButtonPress(){
-    this.setState({bar:this.props.countReview*50});
+    this.setState({value:this.props.countReview/10});
   }
 
   componentDidMount() {
@@ -77,43 +77,57 @@ class HomeScreen extends React.Component {
     this.props.selectDetailReview(selectedReview);
     this.props.navigation.navigate('detail');
   }  
-
+  
   render() {
     bar = this.state.maxbar - countReview_did*100;
     console.log(this.state.bar)
 
-    if(this.state.bar > SCREEN_WIDTH - 100){
-      this.setState({bar:0})
+      
+    if(this.state.value >= 1){
+      this.setState({
+        value: 0
+      });
       imageSelectedIndex =  imageSelectedIndex + 1;
+
     }
 
+    
     return (
       <View style={{ flex: 1 }}>
-        <View style={{flex:12}}>
+        <View style={{flex:20}}>
           <Image
-            style={{ height: 300, width: SCREEN_WIDTH}}
+            style={{ height: 350, width: SCREEN_WIDTH}}
             source={IMAGE_URL[imageSelectedIndex]}
         />
-        </View>
+        
         <View style={styles.container}>
           <Text style={styles.sizeFont}>
-            消費カロリー
+            　　　消費カロリー
           </Text>
         </View>
-        <View style={{flex:4,
-          backgroundColor:'black'}}>
-            <View style={{height:15,
-              backgroundColor:'red',
-              marginRight:this.state.bar}}>
-            </View>
+        <View style={{ alignItems: 'stretch', justifyContent: 'center' }}>
+          <Slider
+            value={this.state.value}
+            onValueChange={value => this.setState({ value })}
+            //maximumValue = {10}
+            maximumTrackTintColor = "floralwhite"
+            minimumTrackTintColor = "skyblue"
+            thumbTintColor = "skyblue"
+
+          />
         </View>
-        <View style={{flex:4}}>
+        <View style={{flex:2}}>
+
+        </View>
+        <View style={{flex:4,}}>
         <Button
-          title="feeding"
+          title="餌をあげる♪"
           buttonStyle={{ backgroundColor: this.state.startcol }}
           onPress={() => this.onStartButtonPress()}
         />
+         
         </View>
+      </View>
       </View>
     );
   }
@@ -131,7 +145,7 @@ const styles = StyleSheet.create({
   sizeFont: {
     flex: 1,
     fontSize: 30,
-    alignItems: "stretch",
+    alignItems: "center",
     justifyContent: "center",
     
   }

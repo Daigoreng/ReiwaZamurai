@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "PET",
-    "slug": "PET_1st",
+    "slug": "PET_2st",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": [
@@ -10,9 +10,9 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/app_icon.png",
+    "icon": "./assets/walkingicon.png",
     "splash": {
-      "image": "./assets/app_icon.png",
+      "image": "./assets/walkingicon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -26,7 +26,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.yide.PPET"
+      "package": "com.yide.PET"
     }
   }
 }

@@ -218,7 +218,6 @@ class ProfileScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    allReviews: state.review.allReviews,
     calsumReview: state.review.calsumReview,
     countReview: state.review.countReview
   };
