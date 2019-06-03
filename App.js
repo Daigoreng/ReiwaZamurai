@@ -26,11 +26,7 @@ export default class App extends React.Component {
   render() {
     const headerNavigationOptions = {
       headerStyle: {
-<<<<<<< HEAD
-        backgroundColor: "darkcyan",
-=======
         backgroundColor: "black",
->>>>>>> c62fe55ceb9ec42c2dc6e867e750bbd37220ad32
         marginTop: Platform.OS === "android" ? 24 : 0
       },
       headerTitleStyle: { color: "white" },
