@@ -26,7 +26,11 @@ export default class App extends React.Component {
   render() {
     const headerNavigationOptions = {
       headerStyle: {
+<<<<<<< HEAD
         backgroundColor: "darkcyan",
+=======
+        backgroundColor: "black",
+>>>>>>> c62fe55ceb9ec42c2dc6e867e750bbd37220ad32
         marginTop: Platform.OS === "android" ? 24 : 0
       },
       headerTitleStyle: { color: "white" },
@@ -39,7 +43,7 @@ export default class App extends React.Component {
 
         navigationOptions: {
           ...headerNavigationOptions,
-          headerTitle: "TTEP",
+          headerTitle: "P E T",
           headerBackTitle: "Home"
         }
       },
@@ -69,11 +73,11 @@ export default class App extends React.Component {
       }
     });
 
-    AddStack.navigationOptions = ({ navigation }) => {
-      return {
-        tabBarVisible: navigation.state.index === -1
-      };
-    };
+    // AddStack.navigationOptions = ({ navigation }) => {
+    //   return {
+    //     tabBarVisible: navigation.state.index === -1
+    //   };
+    // };
 
     const ProfileStack = createStackNavigator({
       // ←追記部分

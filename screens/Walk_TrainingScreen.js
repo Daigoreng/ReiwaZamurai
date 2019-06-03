@@ -205,7 +205,7 @@ class Walk_TrainingScreen extends React.Component{
         // large
           style={{height: 300}}
           onPress={()=>this.startLogging()}
-          title="start"          
+          title=" start   "          
           />
             
           {/* </Button> */}
@@ -226,7 +226,7 @@ class Walk_TrainingScreen extends React.Component{
 
             <Button
             // raised
-            title="stop"
+            title=" stop   "
             color='black'
             style={{height: 300}}
             onPress={()=>{Alert.alert(
